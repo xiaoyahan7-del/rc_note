@@ -549,6 +549,11 @@
               <FileType>1</FileType>
               <FilePath>..\user\src\alarm_sys.c</FilePath>
             </File>
+            <File>
+              <FileName>led_flow.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\user\src\led_flow.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

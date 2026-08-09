@@ -15,7 +15,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "led_flow.h"
 #include "buzzer.h"
 #include "led.h"
 #include "user_beep.h"
@@ -118,21 +118,30 @@ int main(void)
   /* USER CODE BEGIN 2 */
 
 
-  /*
-   * 初始化蜂鸣器
-   * 防止上电时蜂鸣器误响
-   */
-  buzzer_init();
+/*
+ * 初始化蜂鸣器
+ * 防止上电误响
+ */
+buzzer_init();
 
 
-  /*
-   * 如果以后需要测试启动提示音，
-   * 可以取消下面注释
-   */
-  // user_beep();
+
+led_flow_config flow =
+{
+    {
+        {1,500,100},
+        {2,500,100},
+        {3,500,100},
+        {4,500,100}
+    }
+};
 
 
-  /* USER CODE END 2 */
+config_apply(flow);
+
+
+
+/* USER CODE END 2 */
 
 
   /* Infinite loop */
@@ -147,6 +156,7 @@ int main(void)
      * 把报警系统交给 alarm_sys.c 管理
      */
     alarm_sys_func();
+    led_flow_run();
 
 
   }
