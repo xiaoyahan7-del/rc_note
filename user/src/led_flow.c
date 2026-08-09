@@ -1,5 +1,5 @@
 #include "led_flow.h"
-#include "led.h"
+#include "blink.h"
 
 
 static led_flow_config current_config;
@@ -21,24 +21,24 @@ void config_apply(led_flow_config config)
 void led_flow_run(void)
 {
 
-    led_on(
-        current_config.steps[current_step].led_num
-    );
+    blink_cfg_t cfg;
 
 
-    HAL_Delay(
-        current_config.steps[current_step].on_ms
-    );
+    cfg.led_num =
+        current_config.steps[current_step].led_num;
 
 
-    led_off(
-        current_config.steps[current_step].led_num
-    );
+    cfg.on_time =
+        current_config.steps[current_step].on_ms;
 
 
-    HAL_Delay(
-        current_config.steps[current_step].off_ms
-    );
+    cfg.off_time =
+        current_config.steps[current_step].off_ms;
+
+
+
+    blink(&cfg);
+
 
 
     current_step++;

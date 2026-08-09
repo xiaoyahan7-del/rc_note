@@ -155,7 +155,6 @@ config_apply(flow);
     /*
      * 把报警系统交给 alarm_sys.c 管理
      */
-    alarm_sys_func();
     led_flow_run();
 
 
