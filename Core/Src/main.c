@@ -155,8 +155,9 @@ flow_mode_set(FLOW_ALL);
   
       flow_mode_update();
   
-  
       led_flow_run();
+  
+      buzzer_ctrl_run();
   
   }
 

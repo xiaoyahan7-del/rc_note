@@ -191,6 +191,8 @@ void flow_mode_set(flow_mode_t mode)
         current_mode = mode;
 
         current_step = 0;
+        
+        buzzer_mode_set(mode);
 
     }
 
