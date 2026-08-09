@@ -138,6 +138,7 @@ led_flow_config flow =
 
 
 config_apply(flow);
+flow_mode_set(FLOW_TWO);
 
 
 
