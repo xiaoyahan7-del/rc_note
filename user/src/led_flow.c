@@ -1,9 +1,8 @@
 #include "led_flow.h"
-#include "blink.h"
-
+#include "led.h"
+#include "signal.h"
 
 static led_flow_config current_config;
-
 
 static uint8_t current_step = 0;
 
@@ -27,37 +26,39 @@ void led_flow_run(void)
     {
 
         case FLOW_ONE:
-
         {
 
-            blink_cfg_t cfg;
+            uint8_t led_num;
 
 
-            cfg.led_num =
+            led_num =
             current_config.steps[current_step].led_num;
 
 
-            cfg.on_time =
-            current_config.steps[current_step].on_ms;
+            led_on(led_num);
+
+            HAL_Delay(
+                current_config.steps[current_step].on_ms
+            );
 
 
-            cfg.off_time =
-            current_config.steps[current_step].off_ms;
+            led_off(led_num);
 
-
-            blink(&cfg);
+            HAL_Delay(
+                current_config.steps[current_step].off_ms
+            );
 
 
             current_step++;
 
+
             if(current_step >= LED_FLOW_STEP_COUNT)
             {
-                current_step = 0;
+                current_step=0;
             }
 
 
             break;
-
         }
 
 
@@ -127,11 +128,52 @@ void led_flow_run(void)
 }
 
 
+void flow_mode_update(void)
+{
+
+    switch(signal)
+    {
+
+        case 0:
+
+            flow_mode_set(FLOW_ONE);
+
+            break;
+
+
+        case 1:
+
+            flow_mode_set(FLOW_TWO);
+
+            break;
+
+
+        case 2:
+
+            flow_mode_set(FLOW_ALL);
+
+            break;
+
+
+        default:
+
+            break;
+
+    }
+
+}
+
 void flow_mode_set(flow_mode_t mode)
 {
 
-    current_mode = mode;
+    if(current_mode != mode)
+    {
 
-    current_step = 0;
+        current_mode = mode;
+
+        current_step = 0;
+
+    }
 
 }
+

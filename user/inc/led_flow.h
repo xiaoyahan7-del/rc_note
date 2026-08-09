@@ -41,10 +41,11 @@ typedef enum
 
 } flow_mode_t;
 
+
+void flow_mode_update(void);
 void flow_mode_set(flow_mode_t mode);
-
-
 void led_flow_run(void);
+
 
 
 #endif

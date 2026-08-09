@@ -559,6 +559,11 @@
               <FileType>1</FileType>
               <FilePath>..\user\src\led_flow.c</FilePath>
             </File>
+            <File>
+              <FileName>signal.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\user\src\signal.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

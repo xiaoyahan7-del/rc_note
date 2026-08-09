@@ -138,7 +138,7 @@ led_flow_config flow =
 
 
 config_apply(flow);
-flow_mode_set(FLOW_TWO);
+flow_mode_set(FLOW_ALL);
 
 
 
@@ -150,15 +150,14 @@ flow_mode_set(FLOW_TWO);
 
   /* USER CODE BEGIN WHILE */
 
-  while (1)
+  while(1)
   {
-
-    /*
-     * 把报警系统交给 alarm_sys.c 管理
-     */
-    led_flow_run();
-
-
+  
+      flow_mode_update();
+  
+  
+      led_flow_run();
+  
   }
 
   /* USER CODE END WHILE */
