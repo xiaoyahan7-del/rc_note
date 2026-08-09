@@ -564,6 +564,11 @@
               <FileType>1</FileType>
               <FilePath>..\user\src\signal.c</FilePath>
             </File>
+            <File>
+              <FileName>timer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\user\src\timer.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
