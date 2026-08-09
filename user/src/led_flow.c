@@ -8,7 +8,7 @@ static uint8_t current_step = 0;
 
 static flow_mode_t current_mode = FLOW_ONE;
 
-
+static int last_signal = -1;
 
 void config_apply(led_flow_config config)
 {
@@ -131,24 +131,40 @@ void led_flow_run(void)
 void flow_mode_update(void)
 {
 
+    if(signal == last_signal)
+    {
+        return;
+    }
+
+
+    last_signal = signal;
+
+
     switch(signal)
     {
 
         case 0:
 
-            flow_mode_set(FLOW_ONE);
+            flow_mode_set(FLOW_IDLE);
 
             break;
 
 
         case 1:
 
-            flow_mode_set(FLOW_TWO);
+            flow_mode_set(FLOW_ONE);
 
             break;
 
 
         case 2:
+
+            flow_mode_set(FLOW_TWO);
+
+            break;
+
+
+        case 3:
 
             flow_mode_set(FLOW_ALL);
 
@@ -157,11 +173,14 @@ void flow_mode_update(void)
 
         default:
 
+            flow_mode_set(FLOW_IDLE);
+
             break;
 
     }
 
 }
+
 
 void flow_mode_set(flow_mode_t mode)
 {

@@ -32,14 +32,15 @@ void config_apply(led_flow_config config);
 typedef enum
 {
 
-    FLOW_ONE = 0,
+FLOW_IDLE,
 
-    FLOW_TWO,
+FLOW_ONE,
 
-    FLOW_ALL
+FLOW_TWO,
 
+FLOW_ALL
 
-} flow_mode_t;
+}flow_mode_t;
 
 
 void flow_mode_update(void);

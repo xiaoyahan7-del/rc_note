@@ -1,4 +1,4 @@
 #include "signal.h"
 
 
-int signal = 0;
+int signal = 3;
