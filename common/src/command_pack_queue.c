@@ -16,31 +16,73 @@
 /* TODO: 初始化队列，将 head/tail/count 归零 */
 void packet_queue_init(packet_queue *q)
 {
-    /* 在此实现 */
+    q->head = 0;
+    q->tail = 0;
+    q->count = 0;
 }
 
 /* TODO: 入队，成功返回 true，队列满返回 false */
 bool packet_queue_push(packet_queue *q, const command_packet *pkt)
 {
-    /* 在此实现 */
+    if(packet_queue_is_full(q))
+    {
+        return false;
+    }
+
+
+    q->buf[q->tail] = *pkt;
+
+
+    q->tail++;
+
+    if(q->tail >= PACKET_QUEUE_SIZE)
+    {
+        q->tail = 0;
+    }
+
+
+    q->count++;
+
+
+    return true;
 }
 
 /* TODO: 出队，将数据写入 *pkt，成功返回 true，队列空返回 false */
 bool packet_queue_pop(packet_queue *q, command_packet *pkt)
 {
-    /* 在此实现 */
+    if(packet_queue_is_empty(q))
+    {
+        return false;
+    }
+
+
+    *pkt = q->buf[q->head];
+
+
+    q->head++;
+
+    if(q->head >= PACKET_QUEUE_SIZE)
+    {
+        q->head = 0;
+    }
+
+
+    q->count--;
+
+
+    return true;
 }
 
 /* TODO: 判空 */
 bool packet_queue_is_empty(const packet_queue *q)
 {
-    /* 在此实现 */
+    return q->count == 0;
 }
 
 /* TODO: 判满 */
 bool packet_queue_is_full(const packet_queue *q)
 {
-    /* 在此实现 */
+    return q->count >= PACKET_QUEUE_SIZE;
 }
 
 /* ================================================================
@@ -58,9 +100,21 @@ bool packet_queue_is_full(const packet_queue *q)
  */
 
 /* TODO: 用位运算完成封包，并填入校验和 */
-void command_pack_create(command_packet *pkt, uint8_t blink_count, uint8_t led_mask)
+void command_pack_create(command_packet *pkt,
+    uint8_t blink_count,
+    uint8_t led_mask)
 {
-    /* 在此实现 */
+pkt->header[0] = HEADER_HIGH_BYTE;
+pkt->header[1] = HEADER_LOW_BYTE;
+
+
+pkt->cmd = (uint8_t)((blink_count << CMD_BLINK_SHIFT)
+    | (led_mask & CMD_LED_MASK));
+
+
+pkt->checksum = PACKET_CHECKSUM(pkt->header[0],
+               pkt->header[1],
+               pkt->cmd);
 }
 
 /* ================================================================
