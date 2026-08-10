@@ -1,0 +1,125 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="700" viewBox="0 0 1000 700" font-family="'Segoe UI','Microsoft YaHei','PingFang SC',sans-serif">
+  <!-- 背景 -->
+  <rect width="1000" height="700" fill="#FFFFFF"/>
+
+  <!-- 标题 -->
+  <text x="500" y="45" text-anchor="middle" font-size="26" font-weight="bold" fill="#263238">环形队列 (Ring Buffer) · 核心图解</text>
+  <text x="500" y="72" text-anchor="middle" font-size="14" fill="#78909C">一个定长数组 + 两个下标, 写满末尾就绕回开头 —— 常用于串口收发缓冲</text>
+
+  <!-- ============ 左面板: 环形数组 ============ -->
+  <rect x="40" y="95" width="560" height="560" rx="12" fill="#FAFAFA" stroke="#E0E0E0"/>
+  <text x="60" y="128" font-size="16" font-weight="bold" fill="#455A64">① 环形队列: 数组转圈用, tail 读 / head 写</text>
+
+  <!-- 环形格子(圆心 330,360, 半径 190) -->
+  <!-- 0 -->
+  <rect x="298" y="148" width="64" height="44" rx="6" fill="#FAFAFA" stroke="#BDBDBD"/>
+  <text x="330" y="175" text-anchor="middle" font-size="14" font-weight="bold" fill="#455A64">0</text>
+  <!-- 1 -->
+  <rect x="432" y="204" width="64" height="44" rx="6" fill="#FAFAFA" stroke="#BDBDBD"/>
+  <text x="464" y="231" text-anchor="middle" font-size="14" font-weight="bold" fill="#455A64">1</text>
+  <!-- 2 (数据) -->
+  <rect x="488" y="338" width="64" height="44" rx="6" fill="#E0F2F1" stroke="#00897B" stroke-width="2"/>
+  <text x="520" y="365" text-anchor="middle" font-size="14" font-weight="bold" fill="#00695C">2</text>
+  <!-- 3 (数据) -->
+  <rect x="432" y="472" width="64" height="44" rx="6" fill="#E0F2F1" stroke="#00897B" stroke-width="2"/>
+  <text x="464" y="499" text-anchor="middle" font-size="14" font-weight="bold" fill="#00695C">3</text>
+  <!-- 4 (数据) -->
+  <rect x="298" y="528" width="64" height="44" rx="6" fill="#E0F2F1" stroke="#00897B" stroke-width="2"/>
+  <text x="330" y="555" text-anchor="middle" font-size="14" font-weight="bold" fill="#00695C">4</text>
+  <!-- 5 (数据) -->
+  <rect x="164" y="472" width="64" height="44" rx="6" fill="#E0F2F1" stroke="#00897B" stroke-width="2"/>
+  <text x="196" y="499" text-anchor="middle" font-size="14" font-weight="bold" fill="#00695C">5</text>
+  <!-- 6 (head 指向) -->
+  <rect x="108" y="338" width="64" height="44" rx="6" fill="#FAFAFA" stroke="#BDBDBD"/>
+  <text x="140" y="365" text-anchor="middle" font-size="14" font-weight="bold" fill="#455A64">6</text>
+  <!-- 7 -->
+  <rect x="164" y="204" width="64" height="44" rx="6" fill="#FAFAFA" stroke="#BDBDBD"/>
+  <text x="196" y="231" text-anchor="middle" font-size="14" font-weight="bold" fill="#455A64">7</text>
+
+  <!-- 圆心说明 -->
+  <text x="330" y="332" text-anchor="middle" font-size="13" font-family="Consolas,monospace" fill="#90A4AE">BUFFER[8]</text>
+
+  <!-- head 写指针: 从圆心指向格子 6 -->
+  <line x1="310" y1="360" x2="193" y2="360" stroke="#F57C00" stroke-width="2.5"/>
+  <polygon points="173,360 185,353 185,367" fill="#F57C00"/>
+  <text x="240" y="352" text-anchor="middle" font-size="13.5"><tspan fill="#F57C00" font-weight="bold">head </tspan><tspan font-size="12.5" fill="#37474F">写指针</tspan></text>
+
+  <!-- tail 读指针: 从圆心指向格子 2 -->
+  <line x1="350" y1="360" x2="480" y2="360" stroke="#1976D2" stroke-width="2.5"/>
+  <polygon points="487,360 475,353 475,367" fill="#1976D2"/>
+  <text x="420" y="352" text-anchor="middle" font-size="13.5"><tspan fill="#1976D2" font-weight="bold">tail </tspan><tspan font-size="12.5" fill="#37474F">读指针</tspan></text>
+
+  <!-- 当前状态 -->
+  <text x="60" y="588" font-size="13">
+    <tspan fill="#37474F">当前状态: </tspan><tspan fill="#1976D2" font-weight="bold">tail=2</tspan><tspan fill="#37474F">, </tspan><tspan fill="#F57C00" font-weight="bold">head=6</tspan><tspan fill="#37474F"> → 队列里已有 4 个数据 (格子 2~5)</tspan>
+  </text>
+
+  <!-- 图例 -->
+  <rect x="60" y="608" width="14" height="14" fill="#E0F2F1" stroke="#00897B"/>
+  <text x="82" y="620" font-size="12.5" fill="#37474F">已写入的数据</text>
+  <rect x="170" y="608" width="14" height="14" fill="#E3F2FD" stroke="#1976D2"/>
+  <text x="192" y="620" font-size="12.5" fill="#37474F">tail 读指针: 下一个要读的</text>
+  <rect x="350" y="608" width="14" height="14" fill="#FFF3E0" stroke="#F57C00"/>
+  <text x="372" y="620" font-size="12.5" fill="#37474F">head 写指针: 下一个要写的</text>
+
+  <!-- 绕回 -->
+  <text x="60" y="648" font-size="13">
+    <tspan fill="#F57C00" font-weight="bold">绕回: </tspan><tspan fill="#455A64">走到 7 的下一个是 0, 由 </tspan><tspan fill="#455A64" font-family="Consolas,monospace">% N</tspan><tspan fill="#455A64"> 实现</tspan>
+  </text>
+
+  <!-- ============ 右面板: C 代码 ============ -->
+  <rect x="620" y="95" width="340" height="560" rx="12" fill="#FAFAFA" stroke="#E0E0E0"/>
+  <text x="640" y="128" font-size="16" font-weight="bold" fill="#455A64">② C 代码: 入队 / 出队 / 判满</text>
+
+  <!-- 定义 -->
+  <text x="640" y="165" font-size="14.5" font-family="Consolas,'Microsoft YaHei',monospace">
+    <tspan fill="#7B1FA2">#define </tspan><tspan fill="#00897B">N</tspan><tspan fill="#37474F"> 8</tspan>
+  </text>
+  <text x="640" y="191" font-size="14.5" font-family="Consolas,'Microsoft YaHei',monospace">
+    <tspan fill="#7B1FA2">uint8_t </tspan><tspan fill="#00897B">buf</tspan><tspan fill="#37474F">[N];</tspan>
+  </text>
+
+  <!-- 入队 -->
+  <text x="640" y="226" font-size="14"><tspan fill="#F57C00" font-weight="bold">▶ 入队</tspan><tspan font-size="12" fill="#90A4AE"> (enqueue)</tspan></text>
+  <rect x="640" y="243" width="300" height="26" rx="4" fill="#FFF8E1"/>
+  <text x="652" y="261" font-size="14.5" font-family="Consolas,'Microsoft YaHei',monospace">
+    <tspan fill="#00897B">buf</tspan><tspan fill="#37474F">[</tspan><tspan fill="#1976D2">head</tspan><tspan fill="#37474F">] = data;</tspan>
+  </text>
+  <rect x="640" y="271" width="300" height="26" rx="4" fill="#FFF8E1"/>
+  <text x="652" y="289" font-size="14.5" font-family="Consolas,'Microsoft YaHei',monospace">
+    <tspan fill="#1976D2">head</tspan><tspan fill="#37474F"> = (</tspan><tspan fill="#1976D2">head</tspan><tspan fill="#37474F"> + 1) % </tspan><tspan fill="#00897B">N</tspan><tspan fill="#37474F">;</tspan>
+  </text>
+
+  <!-- 出队 -->
+  <text x="640" y="324" font-size="14"><tspan fill="#1976D2" font-weight="bold">▶ 出队</tspan><tspan font-size="12" fill="#90A4AE"> (dequeue)</tspan></text>
+  <text x="640" y="352" font-size="14.5" font-family="Consolas,'Microsoft YaHei',monospace">
+    <tspan fill="#37474F">data = </tspan><tspan fill="#00897B">buf</tspan><tspan fill="#37474F">[</tspan><tspan fill="#1976D2">tail</tspan><tspan fill="#37474F">];</tspan>
+  </text>
+  <rect x="640" y="362" width="300" height="26" rx="4" fill="#E8F5E9"/>
+  <text x="652" y="380" font-size="14.5" font-family="Consolas,'Microsoft YaHei',monospace">
+    <tspan fill="#1976D2">tail</tspan><tspan fill="#37474F"> = (</tspan><tspan fill="#1976D2">tail</tspan><tspan fill="#37474F"> + 1) % </tspan><tspan fill="#00897B">N</tspan><tspan fill="#37474F">;</tspan>
+  </text>
+
+  <!-- 判空判满 -->
+  <text x="640" y="415" font-size="14"><tspan fill="#43A047" font-weight="bold">▶ 判空 / 判满</tspan></text>
+  <text x="640" y="443" font-size="14.5" font-family="Consolas,'Microsoft YaHei',monospace">
+    <tspan fill="#E65100" font-weight="bold">空: </tspan><tspan fill="#1976D2">head</tspan><tspan fill="#37474F"> == </tspan><tspan fill="#1976D2">tail</tspan>
+  </text>
+  <text x="640" y="469" font-size="14.5" font-family="Consolas,'Microsoft YaHei',monospace">
+    <tspan fill="#E65100" font-weight="bold">满: </tspan><tspan fill="#37474F">(</tspan><tspan fill="#1976D2">head</tspan><tspan fill="#37474F"> + 1) % </tspan><tspan fill="#00897B">N</tspan><tspan fill="#37474F"> == </tspan><tspan fill="#1976D2">tail</tspan><tspan font-size="12" fill="#90A4AE">   // 留一格</tspan>
+  </text>
+
+  <!-- 小技巧 -->
+  <text x="640" y="498" font-size="13">
+    <tspan fill="#F57C00" font-weight="bold">提速: </tspan><tspan fill="#37474F">N 取 2 的幂时, % N 可写为 &amp; (N-1)</tspan>
+  </text>
+  <text x="640" y="524" font-size="13">
+    <tspan fill="#F57C00" font-weight="bold">或: </tspan><tspan fill="#37474F">维护 count 计数, count==N 即满</tspan>
+  </text>
+
+  <!-- 警示框 -->
+  <rect x="640" y="552" width="300" height="86" rx="8" fill="#FFF3E0" stroke="#F57C00" stroke-width="1.5"/>
+  <text x="658" y="575" font-size="13.5" font-weight="bold" fill="#E65100">⚠ 为什么判满要留一格?</text>
+  <text x="658" y="597" font-size="13" fill="#5D4037">head == tail 已经代表"空"</text>
+  <text x="658" y="619" font-size="13" fill="#5D4037">若允许存满, "满"和"空"就无法区分</text>
+</svg>

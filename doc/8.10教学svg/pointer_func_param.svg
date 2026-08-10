@@ -1,0 +1,140 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="830" viewBox="0 0 1000 830" font-family="'Segoe UI','Microsoft YaHei','PingFang SC',sans-serif">
+  <!-- 背景 -->
+  <rect width="1000" height="830" fill="#FFFFFF"/>
+
+  <!-- 标题 -->
+  <text x="500" y="45" text-anchor="middle" font-size="26" font-weight="bold" fill="#263238">为什么要用指针 · 函数参数: 传值 vs 传地址</text>
+  <text x="500" y="72" text-anchor="middle" font-size="14" fill="#78909C">C 的参数默认是"拷贝" —— 传值改不动外部变量, 传地址才能</text>
+
+  <!-- 核心结论横幅 -->
+  <rect x="40" y="92" width="920" height="40" rx="8" fill="#FFF8E1" stroke="#F9A825"/>
+  <text x="500" y="117" text-anchor="middle" font-size="14" fill="#5D4037">
+    <tspan>核心: 形参是实参的拷贝。想在函数里改外部变量 → 必须传它的</tspan><tspan font-weight="bold" fill="#F57C00">地址(指针)</tspan>
+  </text>
+
+  <!-- ============ 左面板: 不用指针(传值) ============ -->
+  <rect x="40" y="150" width="450" height="470" rx="12" fill="#FAFAFA" stroke="#E0E0E0"/>
+  <text x="60" y="175" font-size="16" font-weight="bold" fill="#C62828">✗ 不用指针: 传值</text>
+  <text x="60" y="200" font-size="13" fill="#78909C">形参是实参的"复印件", 函数里改的是复印件</text>
+
+  <!-- 定义 -->
+  <text x="58" y="232" font-size="11" font-weight="bold" fill="#90A4AE">定义</text>
+  <text x="84" y="228" font-size="14.5" font-family="Consolas,'Microsoft YaHei',monospace">
+    <tspan fill="#7B1FA2">void </tspan><tspan fill="#37474F">swap(</tspan><tspan fill="#1976D2">a</tspan><tspan fill="#37474F">, </tspan><tspan fill="#1976D2">b</tspan><tspan fill="#37474F">)</tspan>
+  </text>
+  <!-- 函数体 -->
+  <text x="84" y="254" font-size="14.5" font-family="Consolas,'Microsoft YaHei',monospace">
+    <tspan fill="#37474F">{ int t = </tspan><tspan fill="#1976D2">a</tspan><tspan fill="#37474F">;  </tspan><tspan fill="#1976D2">a</tspan><tspan fill="#37474F"> = </tspan><tspan fill="#1976D2">b</tspan><tspan fill="#37474F">;  </tspan><tspan fill="#1976D2">b</tspan><tspan fill="#37474F"> = t; }</tspan>
+  </text>
+  <!-- 调用 -->
+  <text x="58" y="284" font-size="11" font-weight="bold" fill="#90A4AE">调用</text>
+  <text x="84" y="280" font-size="14.5" font-family="Consolas,'Microsoft YaHei',monospace">
+    <tspan fill="#37474F">swap(</tspan><tspan fill="#1976D2">a</tspan><tspan fill="#37474F">, </tspan><tspan fill="#1976D2">b</tspan><tspan fill="#37474F">);</tspan><tspan font-size="12" fill="#90A4AE">   // 传的是 1 和 2 的值</tspan>
+  </text>
+
+  <line x1="60" y1="300" x2="480" y2="300" stroke="#E0E0E0"/>
+
+  <!-- 内存示意 -->
+  <text x="60" y="322" font-size="13" font-weight="bold" fill="#455A64">内存视角: 形参 = 实参的复印件</text>
+  <text x="60" y="348" font-size="12" fill="#90A4AE">main 的变量</text>
+  <rect x="60" y="356" width="90" height="40" rx="4" fill="#E3F2FD" stroke="#1976D2"/>
+  <text x="105" y="380" text-anchor="middle" font-size="13.5" font-family="Consolas,monospace" fill="#263238">a = 1</text>
+  <rect x="170" y="356" width="90" height="40" rx="4" fill="#E3F2FD" stroke="#1976D2"/>
+  <text x="215" y="380" text-anchor="middle" font-size="13.5" font-family="Consolas,monospace" fill="#263238">b = 2</text>
+
+  <text x="275" y="412" font-size="12" fill="#90A4AE">swap 的形参(复印件)</text>
+  <rect x="60" y="428" width="90" height="40" rx="4" fill="#FBE9E7" stroke="#E53935"/>
+  <text x="105" y="452" text-anchor="middle" font-size="13.5" font-family="Consolas,monospace" fill="#C62828">a = 1</text>
+  <rect x="170" y="428" width="90" height="40" rx="4" fill="#FBE9E7" stroke="#E53935"/>
+  <text x="215" y="452" text-anchor="middle" font-size="13.5" font-family="Consolas,monospace" fill="#C62828">b = 2</text>
+
+  <!-- 拷贝箭头 -->
+  <line x1="105" y1="398" x2="105" y2="421" stroke="#E53935" stroke-width="2"/>
+  <polygon points="105,427 98,418 112,418" fill="#E53935"/>
+  <text x="112" y="413" font-size="11" fill="#E53935">拷贝</text>
+  <line x1="215" y1="398" x2="215" y2="421" stroke="#E53935" stroke-width="2"/>
+  <polygon points="215,427 208,418 222,418" fill="#E53935"/>
+  <text x="222" y="413" font-size="11" fill="#E53935">拷贝</text>
+
+  <text x="60" y="492" font-size="12.5" fill="#78909C">函数内: 交换的是副本 → 副本变成 a'=2, b'=1</text>
+  <text x="60" y="518" font-size="13" font-weight="bold" fill="#C62828">函数结束 → 副本销毁, 外面毫发无损</text>
+  <rect x="60" y="534" width="340" height="38" rx="6" fill="#FDECEA" stroke="#E53935"/>
+  <text x="230" y="558" text-anchor="middle" font-size="13.5" font-weight="bold" fill="#C62828">✗ 交换无效: 回到 main, a=1, b=2 原样不动</text>
+
+  <!-- ============ 右面板: 用指针(传地址) ============ -->
+  <rect x="510" y="150" width="450" height="470" rx="12" fill="#FAFAFA" stroke="#E0E0E0"/>
+  <text x="530" y="175" font-size="16" font-weight="bold" fill="#2E7D32">✓ 用指针: 传地址</text>
+  <text x="530" y="200" font-size="13" fill="#78909C">形参是 int* 指针, 存的是地址 —— 顺着地址直接改本体</text>
+
+  <!-- 定义(指针形参) -->
+  <text x="528" y="232" font-size="11" font-weight="bold" fill="#90A4AE">定义</text>
+  <text x="554" y="228" font-size="14.5" font-family="Consolas,'Microsoft YaHei',monospace">
+    <tspan fill="#7B1FA2">void </tspan><tspan fill="#37474F">swap(</tspan><tspan fill="#F57C00" font-weight="bold">*pa</tspan><tspan fill="#37474F">, </tspan><tspan fill="#F57C00" font-weight="bold">*pb</tspan><tspan fill="#37474F">)</tspan>
+  </text>
+  <!-- 函数体(解引用) -->
+  <text x="554" y="254" font-size="14.5" font-family="Consolas,'Microsoft YaHei',monospace">
+    <tspan fill="#37474F">{ int t = </tspan><tspan fill="#F57C00" font-weight="bold">*pa</tspan><tspan fill="#37474F">;  </tspan><tspan fill="#F57C00" font-weight="bold">*pa</tspan><tspan fill="#37474F"> = </tspan><tspan fill="#F57C00" font-weight="bold">*pb</tspan><tspan fill="#37474F">;  </tspan><tspan fill="#F57C00" font-weight="bold">*pb</tspan><tspan fill="#37474F"> = t; }</tspan>
+  </text>
+  <!-- 调用(传地址) -->
+  <text x="528" y="284" font-size="11" font-weight="bold" fill="#90A4AE">调用</text>
+  <text x="554" y="280" font-size="14.5" font-family="Consolas,'Microsoft YaHei',monospace">
+    <tspan fill="#37474F">swap(</tspan><tspan fill="#F57C00" font-weight="bold">&amp;a</tspan><tspan fill="#37474F">, </tspan><tspan fill="#F57C00" font-weight="bold">&amp;b</tspan><tspan fill="#37474F">);</tspan><tspan font-size="12" fill="#90A4AE">   // 传的是 a、b 的门牌号</tspan>
+  </text>
+
+  <line x1="530" y1="300" x2="950" y2="300" stroke="#E0E0E0"/>
+
+  <!-- 内存示意 -->
+  <text x="530" y="322" font-size="13" font-weight="bold" fill="#455A64">内存视角: 形参 = 记门牌号的便签</text>
+  <text x="530" y="348" font-size="12" fill="#90A4AE">main 的变量 (swap 之后)</text>
+  <rect x="530" y="356" width="90" height="40" rx="4" fill="#E3F2FD" stroke="#1976D2"/>
+  <text x="575" y="380" text-anchor="middle" font-size="13.5" font-family="Consolas,monospace" fill="#263238">a = 2</text>
+  <rect x="640" y="356" width="90" height="40" rx="4" fill="#E3F2FD" stroke="#1976D2"/>
+  <text x="685" y="380" text-anchor="middle" font-size="13.5" font-family="Consolas,monospace" fill="#263238">b = 1</text>
+
+  <text x="745" y="412" font-size="12" fill="#90A4AE">swap 的形参(存地址)</text>
+  <rect x="530" y="428" width="90" height="40" rx="4" fill="#FFF3E0" stroke="#F57C00"/>
+  <text x="575" y="452" text-anchor="middle" font-size="12" font-family="Consolas,monospace" fill="#E65100">pa = &amp;a</text>
+  <rect x="640" y="428" width="90" height="40" rx="4" fill="#FFF3E0" stroke="#F57C00"/>
+  <text x="685" y="452" text-anchor="middle" font-size="12" font-family="Consolas,monospace" fill="#E65100">pb = &amp;b</text>
+
+  <!-- 指向箭头 -->
+  <line x1="575" y1="398" x2="575" y2="421" stroke="#F57C00" stroke-width="2"/>
+  <polygon points="575,427 568,418 582,418" fill="#F57C00"/>
+  <text x="582" y="413" font-size="11" fill="#F57C00">指向</text>
+  <line x1="685" y1="398" x2="685" y2="421" stroke="#F57C00" stroke-width="2"/>
+  <polygon points="685,427 678,418 692,418" fill="#F57C00"/>
+  <text x="692" y="413" font-size="11" fill="#F57C00">指向</text>
+
+  <text x="530" y="492" font-size="12.5" fill="#78909C">*pa 就是 a 本体, 对 *pa 赋值就是改 a</text>
+  <text x="530" y="518" font-size="13" font-weight="bold" fill="#2E7D32">函数结束 → 只销毁形参, a 和 b 已被改掉</text>
+  <rect x="530" y="534" width="340" height="38" rx="6" fill="#E8F5E9" stroke="#43A047"/>
+  <text x="700" y="558" text-anchor="middle" font-size="13.5" font-weight="bold" fill="#2E7D32">✓ 交换成功: 回到 main, a=2, b=1</text>
+
+  <!-- ============ 底部: 三步配对 ============ -->
+  <text x="40" y="650" font-size="15" font-weight="bold" fill="#455A64">三步配对: 定义用 * 声明, 调用用 &amp; 传, 函数内再用 * 取</text>
+
+  <rect x="40" y="668" width="290" height="80" rx="10" fill="#FFF3E0" stroke="#F57C00" stroke-width="1.5"/>
+  <text x="185" y="690" text-anchor="middle" font-size="14" font-weight="bold" fill="#E65100">① 定义: 形参写成指针</text>
+  <text x="185" y="712" text-anchor="middle" font-size="13.5" font-family="Consolas,'Microsoft YaHei',monospace">
+    <tspan fill="#37474F">void f(int </tspan><tspan fill="#F57C00" font-weight="bold">*p</tspan><tspan fill="#37474F">)</tspan>
+  </text>
+  <text x="185" y="733" text-anchor="middle" font-size="12" fill="#5D4037">表示: 我要直接改外部变量</text>
+
+  <rect x="355" y="668" width="290" height="80" rx="10" fill="#E3F2FD" stroke="#1976D2" stroke-width="1.5"/>
+  <text x="500" y="690" text-anchor="middle" font-size="14" font-weight="bold" fill="#1565C0">② 调用: 实参传地址</text>
+  <text x="500" y="712" text-anchor="middle" font-size="13.5" font-family="Consolas,'Microsoft YaHei',monospace">
+    <tspan fill="#37474F">f(</tspan><tspan fill="#F57C00" font-weight="bold">&amp;x</tspan><tspan fill="#37474F">);</tspan>
+  </text>
+  <text x="500" y="733" text-anchor="middle" font-size="12" fill="#37474F">&amp; 取地址, 把门牌号交出去</text>
+
+  <rect x="670" y="668" width="290" height="80" rx="10" fill="#E8F5E9" stroke="#43A047" stroke-width="1.5"/>
+  <text x="815" y="690" text-anchor="middle" font-size="14" font-weight="bold" fill="#2E7D32">③ 使用: 函数内解引用</text>
+  <text x="815" y="712" text-anchor="middle" font-size="13.5" font-family="Consolas,'Microsoft YaHei',monospace">
+    <tspan fill="#F57C00" font-weight="bold">*p</tspan><tspan fill="#37474F"> = 新值;</tspan>
+  </text>
+  <text x="815" y="733" text-anchor="middle" font-size="12" fill="#37474F">*p 就是 x 本体, 改的是原变量</text>
+
+  <!-- 其他用途 -->
+  <rect x="40" y="766" width="920" height="46" rx="8" fill="#F3E5F5" stroke="#AB47BC" stroke-width="1.5"/>
+  <text x="500" y="794" text-anchor="middle" font-size="14" fill="#4A148C">指针参数还有两个大用途: ① 一次返回多个结果  ② 大结构体/数组只传地址, 省去整份拷贝</text>
+</svg>

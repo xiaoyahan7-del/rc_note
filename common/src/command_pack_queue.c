@@ -128,10 +128,41 @@ pkt->checksum = PACKET_CHECKSUM(pkt->header[0],
  */
 
 /* TODO: 用位运算校验包头和校验和，解出闪烁次数与 LED 掩码 */
-bool command_pack_unpack(const command_packet *pkt, uint8_t *blink_count, uint8_t *led_mask)
+bool command_pack_unpack(const command_packet *pkt,
+    uint8_t *blink_count,
+    uint8_t *led_mask)
 {
-    /* 在此实现 */
+
+uint16_t header_word;
+
+
+header_word = ((uint16_t)pkt->header[0] << 8)
+| pkt->header[1];
+
+
+if(header_word != HEADER_WORD)
+{
+return false;
 }
+
+
+if(pkt->checksum != PACKET_CHECKSUM(
+pkt->header[0],
+pkt->header[1],
+pkt->cmd))
+{
+return false;
+}
+
+
+*blink_count = pkt->cmd >> CMD_BLINK_SHIFT;
+
+*led_mask = pkt->cmd & CMD_LED_MASK;
+
+
+return true;
+}
+
 
 /* ================================================================
  * LED 命令执行（已封装，直接调用即可）

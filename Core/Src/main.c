@@ -20,10 +20,10 @@
 #include "main.h"
 #include "gpio.h"
 #include "led.h"
+#include "state_machine.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "led.h"
 #include "buzzer.h"
 #include "command_pack_queue.h"
 /* USER CODE END Includes */
@@ -93,37 +93,33 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  // /* USER CODE BEGIN 2 */
+  // buzzer_on();
+  // HAL_Delay(100);
+  // buzzer_off();
+  // state_machine_init();
+  // /* 初始化队列，封一个测试包并入队：LED1、LED2 闪烁 3 次 */
+  // packet_queue_init(&cmd_queue);
+
+  // command_packet test_pkt;
+  // command_pack_create(&test_pkt, 3U, LED_MASK_LED1 | LED_MASK_LED2);
+  // packet_queue_push(&cmd_queue, &test_pkt);
+  // /* USER CODE END 2 */
   /* USER CODE BEGIN 2 */
-  buzzer_on();
-  HAL_Delay(100);
-  buzzer_off();
 
-  /* 初始化队列，封一个测试包并入队：LED1、LED2 闪烁 3 次 */
-  packet_queue_init(&cmd_queue);
+  state_machine_init();
 
-  command_packet test_pkt;
-  command_pack_create(&test_pkt, 3U, LED_MASK_LED1 | LED_MASK_LED2);
-  packet_queue_push(&cmd_queue, &test_pkt);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    /* USER CODE END WHILE */
-
-    /* USER CODE BEGIN 3 */
-    /* 出队 -> 解包 -> LED 执行 */
-    command_packet recv_pkt;
-    uint8_t blink_count, led_mask;
-    if (packet_queue_pop(&cmd_queue, &recv_pkt))
-    {
-        if (command_pack_unpack(&recv_pkt, &blink_count, &led_mask))
-        {
-            command_led_execute(blink_count, led_mask);
-        }
-    }
-    /* USER CODE END 3 */
+      /* USER CODE BEGIN 3 */
+  
+      state_machine_run();
+  
+      /* USER CODE END 3 */
   }
   /* USER CODE END 3 */
 }
