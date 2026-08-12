@@ -23,12 +23,10 @@ static void state_idle_run(void)
 
     uint8_t event;
 
-    event = key_scan();
-
-    if (event == KEY_LONG)
+    if(key_scan() == KEY_LONG)
     {
         buzzer_beep();
-
+    
         current_state = STATE_FLOW;
     }
 }
@@ -44,26 +42,28 @@ static void state_flow_run(void)
     led_on(LED1_PIN);
     HAL_Delay(300);
 
-
     led_all_off();
 
     led_on(LED2_PIN);
     HAL_Delay(300);
-
 
     led_all_off();
 
     led_on(LED3_PIN);
     HAL_Delay(300);
 
-
     led_all_off();
 
     led_on(LED4_PIN);
     HAL_Delay(300);
 
-}
+    if (key_scan()==KEY_SHORT)
+    {
+        buzzer_beep();
 
+        current_state = STATE_BREATH;
+    }
+}
 
 /*
  * LED3 LED4 呼吸
@@ -77,11 +77,11 @@ static void state_breath_run(void)
 
     HAL_Delay(10);
 
-    if (key_scan() == KEY_SHORT)
+    if(key_scan()==KEY_SHORT)
     {
         buzzer_beep();
-
-        current_state = STATE_FLOW;
+    
+        current_state = STATE_BREATH;
     }
 }
 
@@ -102,9 +102,8 @@ static const state_func_t state_table[STATE_COUNT] =
 void state_machine_init(void)
 {
 
-current_state =
-STATE_IDLE;
-
+    current_state =
+        STATE_IDLE;
 }
 
 void state_machine_run(void)
