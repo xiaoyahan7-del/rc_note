@@ -11,7 +11,6 @@
 
 #include "gpio.h"
 #include "tim.h"
-#include "usart.h"
 
 #include "led.h"
 #include "buzzer.h"
@@ -41,7 +40,6 @@ int main(void)
 
   MX_TIM3_Init();
 
-  MX_USART1_UART_Init();
 
   /*
       TIM3 PWM启动
