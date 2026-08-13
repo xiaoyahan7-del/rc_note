@@ -17,6 +17,7 @@
 #include "key.h"
 #include "soft_pwm.h"
 #include "state_machine.h"
+#include "vofa_uart.h"
 
 void SystemClock_Config(void);
 
@@ -58,6 +59,8 @@ int main(void)
 
     state_machine_init();
 
+    vofa_uart_init();
+
     /*
         主循环
 
@@ -66,7 +69,7 @@ int main(void)
 
     while (1)
     {
-        state_machine_run();
+        vofa_uart_run();
     }
 }
 
