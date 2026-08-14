@@ -17,7 +17,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "vofa_uart.h"
-
+#include "can_task.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -88,7 +88,7 @@ int main(void)
   MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
   vofa_uart_init();
-
+  can_task_init();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -99,6 +99,7 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
     vofa_uart_run();
+    can_task_run();
   }
   /* USER CODE END 3 */
 }

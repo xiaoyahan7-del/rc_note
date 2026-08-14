@@ -779,6 +779,11 @@
               <FileType>1</FileType>
               <FilePath>..\user\src\vofa_uart.c</FilePath>
             </File>
+            <File>
+              <FileName>can_task.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\user\src\can_task.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
