@@ -755,29 +755,9 @@
               <FilePath>..\user\src\buzzer.c</FilePath>
             </File>
             <File>
-              <FileName>key.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\user\src\key.c</FilePath>
-            </File>
-            <File>
               <FileName>led.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\user\src\led.c</FilePath>
-            </File>
-            <File>
-              <FileName>state_machine.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\user\src\state_machine.c</FilePath>
-            </File>
-            <File>
-              <FileName>soft_pwm.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\user\src\soft_pwm.c</FilePath>
-            </File>
-            <File>
-              <FileName>vofa_uart.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\user\src\vofa_uart.c</FilePath>
             </File>
             <File>
               <FileName>can_task.c</FileName>

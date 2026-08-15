@@ -16,7 +16,6 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "vofa_uart.h"
 #include "can_task.h"
 /* USER CODE END Includes */
 
@@ -87,7 +86,6 @@ int main(void)
   MX_CAN1_Init();
   MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
-  vofa_uart_init();
   can_task_init();
   /* USER CODE END 2 */
 
@@ -98,7 +96,6 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-    vofa_uart_run();
     can_task_run();
   }
   /* USER CODE END 3 */
