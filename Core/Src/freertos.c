@@ -26,6 +26,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "led.h"
+#include "slave_protocol.h"
 
 /* USER CODE END Includes */
 
@@ -46,6 +47,12 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN Variables */
+osThreadId_t slaveProtocolTaskHandle;
+const osThreadAttr_t slaveProtocolTask_attributes = {
+  .name = "slaveProtocolTask",
+  .stack_size = 256 * 4,
+  .priority = (osPriority_t) osPriorityAboveNormal,
+};
 
 /* USER CODE END Variables */
 /* Definitions for heartbeatTask */
@@ -58,6 +65,7 @@ const osThreadAttr_t heartbeatTask_attributes = {
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
+void StartSlaveProtocolTask(void *argument);
 
 /* USER CODE END FunctionPrototypes */
 
@@ -96,7 +104,8 @@ void MX_FREERTOS_Init(void) {
   heartbeatTaskHandle = osThreadNew(StartDefaultTask, NULL, &heartbeatTask_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
-  /* add threads, ... */
+  slaveProtocolTaskHandle = osThreadNew(StartSlaveProtocolTask, NULL,
+                                        &slaveProtocolTask_attributes);
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_EVENTS */
@@ -131,6 +140,17 @@ void StartDefaultTask(void *argument)
 
 /* Private application code --------------------------------------------------*/
 /* USER CODE BEGIN Application */
+void StartSlaveProtocolTask(void *argument)
+{
+  (void)argument;
+  slave_protocol_init();
+
+  for (;;)
+  {
+    slave_protocol_run();
+    osDelay(1U);
+  }
+}
 
 /* USER CODE END Application */
 

@@ -17,7 +17,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "can_task.h"
+#include "slave_protocol.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -88,7 +88,6 @@ int main(void)
   MX_CAN1_Init();
   MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
-  can_task_init();
   /* USER CODE END 2 */
 
   /* Init scheduler */
@@ -107,7 +106,6 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-    can_task_run();
   }
   /* USER CODE END 3 */
 }
